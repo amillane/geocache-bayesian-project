@@ -121,62 +121,62 @@ ggplot(lambda_sample_posterior_long, aes(x = Sample, color = factor(Lambda))) +
 # Change shape of legend keys
 # Change shape of legend keys
 # Two parameters, intercept (alpha) and slope (beta).
-k = 27
-initial_parameters <- c(3, 6, 4, 3, 4, 2, 5, 1, 3)
+#k = 27
+#initial_parameters <- c(3, 6, 4, 3, 4, 2, 5, 1, 3)
 
-big_like <- sapply(1:n, function(i) {
-  param <- initial_parameters[i]
-  mle <-  optim(par = param, fn = log_likelihood, y = y_list[[i]], control = list(fnscale = -1), method = "L-BFGS-B", lower = 0.01)$par
-  log_likelihood(mle, y_list[[i]])
-})
+#big_like <- sapply(1:n, function(i) {
+  #param <- initial_parameters[i]
+  #mle <-  optim(par = param, fn = log_likelihood, y = y_list[[i]], control = list(fnscale = -1), method = "L-BFGS-B", lower = 0.01)$par
+  #log_likelihood(mle, y_list[[i]])
+#})
 
 
-aic1 <- -2 * sum(big_like) + 2 * k
+#aic1 <- -2 * sum(big_like) + 2 * k
 
 # DIC
-sam <- sapply(1:n, function(i) {
-  bayes_estimate <- mean(lambda_sample_posterior[,i])
-  y = y_list[[i]]
-  p_dic <- 2 * (log_likelihood(bayes_estimate,y) - mean(log_likelihood(lambda_sample_posterior[,i],y)))
-  log <- log_likelihood(bayes_estimate, y)
-  return(c(p_dic, log))
-})
+#sam <- sapply(1:n, function(i) {
+  #bayes_estimate <- mean(lambda_sample_posterior[,i])
+  #y = y_list[[i]]
+  #p_dic <- 2 * (log_likelihood(bayes_estimate,y) - mean(log_likelihood(lambda_sample_posterior[,i],y)))
+  #log <- log_likelihood(bayes_estimate, y)
+  #return(c(p_dic, log))
+#})
 
-test1 <- function(observed, expected) { # Test general goodness-of-fit in 'residuals'
-  sum((observed - expected)^2 / expected)
-}
+#test1 <- function(observed, expected) { # Test general goodness-of-fit in 'residuals'
+  #sum((observed - expected)^2 / expected)
+#}
 
-test2 <- function(observed, expected) { # Test for no monotonic trend in 'residuals'
+#test2 <- function(observed, expected) { # Test for no monotonic trend in 'residuals'
   # Spearman correlation is a nonparametric alternative to the regular (Pearson) correlation
-  cor(seq_along(observed), observed - expected, method = "spearman")
-}
+  #cor(seq_along(observed), observed - expected, method = "spearman")
+#}
 
 
 
-dic4 <- -2 * sum(sam[2,]) + 2 * sum(sam[1,])
+#dic4 <- -2 * sum(sam[2,]) + 2 * sum(sam[1,])
 
 
-lp <- sapply(1:n, function(i) {
-  y <- y_list[[i]]
-  samples <- lambda_sample_posterior[,i]
-  sapply(1:length(y), \(i) 1/mean(1/dpois(y[i], samples)))
-})
+#lp <- sapply(1:n, function(i) {
+  #y <- y_list[[i]]
+  #samples <- lambda_sample_posterior[,i]
+  #sapply(1:length(y), \(i) 1/mean(1/dpois(y[i], samples)))
+#})
 
- lp <- sapply(lp,log)
- lp <- sapply(lp,sum)
+ #lp <- sapply(lp,log)
+ #lp <- sapply(lp,sum)
 
 #Table with AIC DIC and WAIC
-df4 <- data.frame(AIC = aic, DIC = dic, WAIC = waic, LPML = lp)
+#df4 <- data.frame(AIC = aic, DIC = dic, WAIC = waic, LPML = lp)
 
 
 ### Frequentist ### 
 # Initial guess for lambdas for all groups
-initial_parameters <- c(3, 6, 4, 3, 4, 2, 5, 1, 3)
+#initial_parameters <- c(3, 6, 4, 3, 4, 2, 5, 1, 3)
 
 # Call optim for the first group
-optim_results <- sapply(1:n, function(i) {
-  optim(par = initial_parameters[i], fn = log_likelihood, y = y_list[[i]], control = list(fnscale = -1), method = "L-BFGS-B", lower = 0.01)$par
-})
+#optim_results <- sapply(1:n, function(i) {
+  #optim(par = initial_parameters[i], fn = log_likelihood, y = y_list[[i]], control = list(fnscale = -1), method = "L-BFGS-B", lower = 0.01)$par
+#})
 
 
 
